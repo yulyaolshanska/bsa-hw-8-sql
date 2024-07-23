@@ -1,17 +1,3 @@
--- Users Table
-CREATE TABLE Users (
-    user_id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    avatar_file_id INTEGER,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (avatar_file_id) REFERENCES Files(file_id)
-);
-
 -- Files Table
 CREATE TABLE Files (
     file_id SERIAL PRIMARY KEY,
@@ -29,6 +15,28 @@ CREATE TABLE Countries (
     country_name VARCHAR(100) NOT NULL UNIQUE
 );
 
+-- Genres Table
+CREATE TABLE Genres (
+    genre_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
+
+-- Persons Table
+CREATE TABLE Persons (
+    person_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    biography TEXT,
+    date_of_birth DATE,
+    gender VARCHAR(10),
+    country_id INTEGER,
+    primary_photo_file_id INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (country_id) REFERENCES Countries(country_id),
+    FOREIGN KEY (primary_photo_file_id) REFERENCES Files(file_id)
+);
+
 -- Movies Table
 CREATE TABLE Movies (
     movie_id SERIAL PRIMARY KEY,
@@ -36,7 +44,7 @@ CREATE TABLE Movies (
     description TEXT,
     budget BIGINT,
     release_date DATE,
-    duration INTERVAL HOUR TO MINUTE,
+    duration INTERVAL,  
     director_id INTEGER,
     country_id INTEGER,
     poster_file_id INTEGER,
@@ -45,12 +53,6 @@ CREATE TABLE Movies (
     FOREIGN KEY (director_id) REFERENCES Persons(person_id),
     FOREIGN KEY (country_id) REFERENCES Countries(country_id),
     FOREIGN KEY (poster_file_id) REFERENCES Files(file_id)
-);
-
--- Genres Table
-CREATE TABLE Genres (
-    genre_id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE
 );
 
 -- MovieGenres Table (Many-to-Many relationship between Movies and Genres)
@@ -70,22 +72,6 @@ CREATE TABLE Characters (
     role VARCHAR(50) CHECK (role IN ('leading', 'supporting', 'background')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Persons Table
-CREATE TABLE Persons (
-    person_id SERIAL PRIMARY KEY,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    biography TEXT,
-    date_of_birth DATE,
-    gender VARCHAR(10),
-    country_id INTEGER,
-    primary_photo_file_id INTEGER,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (country_id) REFERENCES Countries(country_id),
-    FOREIGN KEY (primary_photo_file_id) REFERENCES Files(file_id)
 );
 
 -- MovieCharacters Table (Many-to-Many relationship between Movies and Characters)
@@ -113,6 +99,20 @@ CREATE TABLE Directors (
     PRIMARY KEY (person_id, movie_id),
     FOREIGN KEY (person_id) REFERENCES Persons(person_id),
     FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)
+);
+
+-- Users Table
+CREATE TABLE Users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    avatar_file_id INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (avatar_file_id) REFERENCES Files(file_id)
 );
 
 -- FavoriteMovies Table (Many-to-Many relationship between Users and Movies)
