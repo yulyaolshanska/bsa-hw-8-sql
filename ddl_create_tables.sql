@@ -3,8 +3,8 @@ CREATE TABLE Files (
     file_id SERIAL PRIMARY KEY,
     file_name VARCHAR(255) NOT NULL,
     mime_type VARCHAR(50) NOT NULL,
-    file_key VARCHAR(255) NOT NULL UNIQUE,
-    url VARCHAR(255) NOT NULL,
+    file_key VARCHAR(255) UNIQUE NOT NULL,
+    url TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -12,13 +12,13 @@ CREATE TABLE Files (
 -- Countries Table
 CREATE TABLE Countries (
     country_id SERIAL PRIMARY KEY,
-    country_name VARCHAR(100) NOT NULL UNIQUE
+    country_name VARCHAR(100) UNIQUE NOT NULL
 );
 
 -- Genres Table
 CREATE TABLE Genres (
     genre_id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE
+    name VARCHAR(50) UNIQUE NOT NULL
 );
 
 -- Persons Table
@@ -44,7 +44,7 @@ CREATE TABLE Movies (
     description TEXT,
     budget BIGINT,
     release_date DATE,
-    duration INTERVAL,  
+    duration INTERVAL,
     director_id INTEGER,
     country_id INTEGER,
     poster_file_id INTEGER,
@@ -96,6 +96,17 @@ CREATE TABLE Actors (
     PRIMARY KEY (person_id, character_id),
     FOREIGN KEY (person_id) REFERENCES Persons(person_id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (character_id) REFERENCES Characters(character_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE MovieActors (
+    movie_id INTEGER NOT NULL,
+    person_id INTEGER NOT NULL,
+    role_description TEXT, 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (movie_id, person_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (person_id) REFERENCES Persons(person_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Directors Table (Relationship between Persons and Movies)
