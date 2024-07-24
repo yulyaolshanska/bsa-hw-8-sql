@@ -3,6 +3,7 @@
 ## ER Diagram
 
 ```mermaid
+
 erDiagram
     USERS {
         int user_id PK
@@ -77,6 +78,13 @@ erDiagram
         int person_id FK
         int character_id FK
     }
+    MOVIEACTORS {
+        int movie_id FK
+        int person_id FK
+        text role_description
+        timestamp created_at
+        timestamp updated_at
+    }
     DIRECTORS {
         int person_id FK
         int movie_id FK
@@ -86,17 +94,19 @@ erDiagram
         int movie_id FK
     }
 
-    USERS ||--o{ FILES : "avatar"
-    MOVIES ||--o{ FILES : "poster"
-    MOVIES ||--o{ COUNTRIES : "country"
-    MOVIES ||--o{ PERSONS : "director"
-    MOVIES ||--o{ MOVIEGENRES : "movie"
-    GENRES ||--o{ MOVIEGENRES : "genre"
-    MOVIES ||--o{ MOVIECHARACTERS : "movie"
-    CHARACTERS ||--o{ MOVIECHARACTERS : "character"
-    PERSONS ||--o{ ACTORS : "person"
-    CHARACTERS ||--o{ ACTORS : "character"
-    PERSONS ||--o{ DIRECTORS : "person"
-    MOVIES ||--o{ DIRECTORS : "movie"
-    USERS ||--o{ FAVORITEMOVIES : "user"
-    MOVIES ||--o{ FAVORITEMOVIES : "movie"
+    USERS ||--o{ FILES : "avatar_file_id"
+    MOVIES ||--o{ FILES : "poster_file_id"
+    MOVIES ||--o{ COUNTRIES : "country_id"
+    MOVIES ||--o{ PERSONS : "director_id"
+    MOVIES ||--o{ MOVIEGENRES : "movie_id"
+    GENRES ||--o{ MOVIEGENRES : "genre_id"
+    MOVIES ||--o{ MOVIECHARACTERS : "movie_id"
+    CHARACTERS ||--o{ MOVIECHARACTERS : "character_id"
+    PERSONS ||--o{ ACTORS : "person_id"
+    CHARACTERS ||--o{ ACTORS : "character_id"
+    PERSONS ||--o{ DIRECTORS : "person_id"
+    MOVIES ||--o{ DIRECTORS : "movie_id"
+    USERS ||--o{ FAVORITEMOVIES : "user_id"
+    MOVIES ||--o{ FAVORITEMOVIES : "movie_id"
+    MOVIES ||--o{ MOVIEACTORS : "movie_id"
+    PERSONS ||--o{ MOVIEACTORS : "person_id"
