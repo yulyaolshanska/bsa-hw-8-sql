@@ -1,8 +1,3 @@
-# Movie Database Schema
-
-## ER Diagram
-
-```mermaid
 erDiagram
     USERS {
         int user_id PK
@@ -77,6 +72,13 @@ erDiagram
         int person_id FK
         int character_id FK
     }
+    MOVIEACTORS {
+        int movie_id FK
+        int person_id FK
+        text role_description
+        timestamp created_at
+        timestamp updated_at
+    }
     DIRECTORS {
         int person_id FK
         int movie_id FK
@@ -100,3 +102,5 @@ erDiagram
     MOVIES ||--o{ DIRECTORS : "movie_id"
     USERS ||--o{ FAVORITEMOVIES : "user_id"
     MOVIES ||--o{ FAVORITEMOVIES : "movie_id"
+    MOVIES ||--o{ MOVIEACTORS : "movie_id"
+    PERSONS ||--o{ MOVIEACTORS : "person_id"
