@@ -1,4 +1,21 @@
-SELECT
+WITH actor_details AS (
+    SELECT
+        m.movie_id,
+        pa.person_id,
+        pa.first_name,
+        pa.last_name,
+        json_build_object(
+            'file_id', af.file_id,
+            'file_name', af.file_name,
+            'mime_type', af.mime_type,
+            'file_key', af.file_key,
+            'url', af.url
+        ) AS photo
+    FROM Movies m
+    LEFT JOIN MovieActors ma ON m.movie_id = ma.movie_id
+    LEFT JOIN Persons pa ON ma.person_id = pa.person_id
+    LEFT JOIN Files af ON pa.primary_photo_file_id = af.file_id
+)SELECT
     m.movie_id AS ID,
     m.title,
     m.release_date,
@@ -23,18 +40,12 @@ SELECT
             'url', pf.url
         )
     ) AS director,
-    json_agg(
-        json_build_object(
-            'id', pa.person_id,
-            'first_name', pa.first_name,
-            'last_name', pa.last_name,
-            'photo', json_build_object(
-                'file_id', af.file_id,
-                'file_name', af.file_name,
-                'mime_type', af.mime_type,
-                'file_key', af.file_key,
-                'url', af.url
-            )
+      json_agg(
+       json_build_object(
+            'id', ad.person_id,
+            'first_name', ad.first_name,
+            'last_name', ad.last_name,
+            'photo', ad.photo
         )
     ) AS actors,
     json_agg(
@@ -43,16 +54,32 @@ SELECT
             'name', g.name
         )
     ) AS genres
+
 FROM Movies m
 LEFT JOIN Files f ON m.poster_file_id = f.file_id
-JOIN Directors d ON m.movie_id = d.movie_id
-JOIN Persons p ON d.person_id = p.person_id
-LEFT JOIN Files pf ON p.primary_photo_file_id = pf.file_id
-LEFT JOIN MovieCharacters mc ON m.movie_id = mc.movie_id
-LEFT JOIN Actors a ON mc.character_id = a.character_id
-LEFT JOIN Persons pa ON a.person_id = pa.person_id
-LEFT JOIN Files af ON pa.primary_photo_file_id = af.file_id
 LEFT JOIN MovieGenres mg ON m.movie_id = mg.movie_id
 LEFT JOIN Genres g ON mg.genre_id = g.genre_id
+JOIN Directors d ON m.movie_id = d.movie_id
+JOIN Persons p ON d.person_id = p.person_id
+LEFT JOIN Files pf ON p.primary_photo_file_id = pf.file_id  
+LEFT JOIN actor_details ad ON m.movie_id = ad.movie_id
 WHERE m.movie_id = 1
 GROUP BY m.movie_id, f.file_id, p.person_id, pf.file_id;
+
+
+
+
+
+-- FROM Movies m
+-- LEFT JOIN Files f ON m.poster_file_id = f.file_id
+-- JOIN Directors d ON m.movie_id = d.movie_id
+-- JOIN Persons p ON d.person_id = p.person_id
+-- LEFT JOIN Files pf ON p.primary_photo_file_id = pf.file_id
+-- LEFT JOIN MovieCharacters mc ON m.movie_id = mc.movie_id
+-- LEFT JOIN Actors a ON mc.character_id = a.character_id
+-- LEFT JOIN Persons pa ON a.person_id = pa.person_id
+-- LEFT JOIN Files af ON pa.primary_photo_file_id = af.file_id
+-- LEFT JOIN MovieGenres mg ON m.movie_id = mg.movie_id
+-- LEFT JOIN Genres g ON mg.genre_id = g.genre_id
+-- WHERE m.movie_id = 1
+-- GROUP BY m.movie_id, f.file_id, p.person_id, pf.file_id;
