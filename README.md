@@ -1,3 +1,9 @@
+# Movie Database Schema
+
+## ER Diagram
+
+```mermaid
+
 erDiagram
     USERS {
         int user_id PK
