@@ -28,13 +28,13 @@ CREATE TABLE Persons (
     last_name VARCHAR(50) NOT NULL,
     biography TEXT,
     date_of_birth DATE,
-    gender VARCHAR(10),
+    gender VARCHAR(10) CHECK (gender IN ('0', '1', '2', '9')), -- ISO/IEC 5218 codes
     country_id INTEGER,
     primary_photo_file_id INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (country_id) REFERENCES Countries(country_id),
-    FOREIGN KEY (primary_photo_file_id) REFERENCES Files(file_id)
+    FOREIGN KEY (primary_photo_file_id) REFERENCES Files(file_id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- Movies Table
@@ -52,16 +52,18 @@ CREATE TABLE Movies (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (director_id) REFERENCES Persons(person_id),
     FOREIGN KEY (country_id) REFERENCES Countries(country_id),
-    FOREIGN KEY (poster_file_id) REFERENCES Files(file_id)
+    FOREIGN KEY (poster_file_id) REFERENCES Files(file_id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- MovieGenres Table (Many-to-Many relationship between Movies and Genres)
 CREATE TABLE MovieGenres (
     movie_id INTEGER NOT NULL,
     genre_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (movie_id, genre_id),
-    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
-    FOREIGN KEY (genre_id) REFERENCES Genres(genre_id)
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (genre_id) REFERENCES Genres(genre_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Characters Table
@@ -78,27 +80,33 @@ CREATE TABLE Characters (
 CREATE TABLE MovieCharacters (
     movie_id INTEGER NOT NULL,
     character_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (movie_id, character_id),
-    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
-    FOREIGN KEY (character_id) REFERENCES Characters(character_id)
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (character_id) REFERENCES Characters(character_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Actors Table (Relationship between Persons and Characters)
 CREATE TABLE Actors (
     person_id INTEGER NOT NULL,
     character_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (person_id, character_id),
-    FOREIGN KEY (person_id) REFERENCES Persons(person_id),
-    FOREIGN KEY (character_id) REFERENCES Characters(character_id)
+    FOREIGN KEY (person_id) REFERENCES Persons(person_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (character_id) REFERENCES Characters(character_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Directors Table (Relationship between Persons and Movies)
 CREATE TABLE Directors (
     person_id INTEGER NOT NULL,
     movie_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (person_id, movie_id),
-    FOREIGN KEY (person_id) REFERENCES Persons(person_id),
-    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)
+    FOREIGN KEY (person_id) REFERENCES Persons(person_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Users Table
@@ -112,14 +120,16 @@ CREATE TABLE Users (
     avatar_file_id INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (avatar_file_id) REFERENCES Files(file_id)
+    FOREIGN KEY (avatar_file_id) REFERENCES Files(file_id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- FavoriteMovies Table (Many-to-Many relationship between Users and Movies)
 CREATE TABLE FavoriteMovies (
     user_id INTEGER NOT NULL,
     movie_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, movie_id),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
