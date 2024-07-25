@@ -6,18 +6,18 @@
 
 erDiagram
     USERS {
-        int user_id PK
+        int user_id
         varchar username
         varchar first_name
         varchar last_name
         varchar email
         varchar password
-        int avatar_file_id FK
+        int avatar_file_id
         timestamp created_at
         timestamp updated_at
     }
     FILES {
-        int file_id PK
+        int file_id
         varchar file_name
         varchar mime_type
         varchar file_key
@@ -26,35 +26,34 @@ erDiagram
         timestamp updated_at
     }
     COUNTRIES {
-        int country_id PK
+        int country_id
         varchar country_name
     }
     MOVIES {
-        int movie_id PK
+        int movie_id
         varchar title
         text description
         bigint budget
         date release_date
         interval duration
-        int director_id FK
-        int country_id FK
-        int poster_file_id FK
+        int director_id
+        int country_id
+        int poster_file_id
         timestamp created_at
         timestamp updated_at
     }
     GENRES {
-        int genre_id PK
+        int genre_id
         varchar name
     }
     MOVIEGENRES {
-        int movie_id FK
-        int genre_id FK
+        int movie_id
+        int genre_id
         timestamp created_at
         timestamp updated_at
-        PK(movie_id, genre_id)
     }
     CHARACTERS {
-        int character_id PK
+        int character_id
         varchar name
         text description
         varchar role
@@ -62,36 +61,33 @@ erDiagram
         timestamp updated_at
     }
     PERSONS {
-        int person_id PK
+        int person_id
         varchar first_name
         varchar last_name
         text biography
         date date_of_birth
         varchar gender
-        int country_id FK
-        int primary_photo_file_id FK
+        int country_id
+        int primary_photo_file_id
         timestamp created_at
         timestamp updated_at
     }
     MOVIEACTORS {
-        int movie_id FK
-        int person_id FK
-        int character_id FK
+        int movie_id
+        int person_id
+        int character_id
         text role_description
         varchar role_type
         timestamp created_at
         timestamp updated_at
-        PK(movie_id, person_id, character_id)
     }
     DIRECTORS {
-        int person_id FK
-        int movie_id FK
-        PK(person_id, movie_id)
+        int person_id
+        int movie_id
     }
     FAVORITEMOVIES {
-        int user_id FK
-        int movie_id FK
-        PK(user_id, movie_id)
+        int user_id
+        int movie_id
     }
 
     USERS ||--o{ FILES : "avatar_file_id"
