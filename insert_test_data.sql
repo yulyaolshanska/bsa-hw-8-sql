@@ -46,21 +46,20 @@ INSERT INTO Persons (first_name, last_name, biography, date_of_birth, gender, co
 
 -- Insert data into Movies
 INSERT INTO Movies (title, description, budget, release_date, duration, director_id, country_id, poster_file_id) VALUES 
-('Jurassic Park', 'A theme park with genetically engineered dinosaurs turns dangerous.', 63000000, '1993-06-11', '02:07:00', 1, 1, 2),
-('Black Swan', 'A ballet dancer wins the lead role in a new production of "Swan Lake".', 13000000, '2010-12-03', '01:48:00', 2, 2, 2),
-('Inception', 'A thief who steals corporate secrets through the use of dream-sharing technology.', 160000000, '2010-07-16', '02:28:00', 3, 1, 3),
-('Mad Max: Fury Road', 'In a post-apocalyptic wasteland, a drifter helps a group of rebels escape from a tyrannical ruler.', 150000000, '2015-05-15', '02:00:00', 3, 1, 4),
-('The Grand Budapest Hotel', 'The adventures of a hotel concierge and his protégé.', 20000000, '2014-03-28', '01:39:00', 3, 2, 4),
-('New Movie 1', 'Description for New Movie 1.', 50000000, '2022-06-15', '01:45:00', 3, 1, 3),
-('New Movie 2', 'Description for New Movie 2.', 70000000, '2023-05-20', '02:10:00', 3, 2, 4),
-('Epic Adventure', 'An epic journey through mystical lands and ancient civilizations.', 75000000, '2023-08-15', '02:30:00', 3, 1, 4),
-('Epic Journey', 'A thrilling adventure of a team venturing into unknown lands.', 120000000, '2023-09-01', '02:16:00', 3, 1, 5),
-('Silent Film', 'A movie with no characters.', 10000000, '2022-07-15', '01:20:00', 3, 1, 5),
-('Documentary', 'A fascinating documentary.', 2000000, '2023-01-01', '01:15:00', 1, 1, 5),
-('Mystery Film', 'A suspenseful film with an unknown plot.', 20000000, '2024-01-01', '01:50:00', 3, 1, 2),
-('Experimental Film', 'A film with experimental techniques.', 15000000, '2024-02-01', '02:50:00', 3, 1, 3),
-('No Character Movie', 'A movie with no characters.', 5000000, '2024-03-01', '01:30:00', 3, 1, 3);
-
+('Jurassic Park', 'A theme park with genetically engineered dinosaurs turns dangerous.', 63000000, '1993-06-11', '02:07:00', 1, 1, 2), -- Directed by Steven Spielberg
+('Black Swan', 'A ballet dancer wins the lead role in a new production of "Swan Lake".', 13000000, '2010-12-03', '01:48:00', 2, 2, 2), -- Directed by Natalie Portman
+('Inception', 'A thief who steals corporate secrets through the use of dream-sharing technology.', 160000000, '2010-07-16', '02:28:00', 3, 1, 3), -- Directed by Quentin Tarantino
+('Mad Max: Fury Road', 'In a post-apocalyptic wasteland, a drifter helps a group of rebels escape from a tyrannical ruler.', 150000000, '2015-05-15', '02:00:00', 3, 1, 4), -- Directed by Quentin Tarantino
+('The Grand Budapest Hotel', 'The adventures of a hotel concierge and his protégé.', 20000000, '2014-03-28', '01:39:00', 3, 2, 4), -- Directed by Quentin Tarantino
+('New Movie 1', 'Description for New Movie 1.', 50000000, '2022-06-15', '01:45:00', 3, 1, 3), -- Directed by Quentin Tarantino
+('New Movie 2', 'Description for New Movie 2.', 70000000, '2023-05-20', '02:10:00', 3, 2, 4), -- Directed by Quentin Tarantino
+('Epic Adventure', 'An epic journey through mystical lands and ancient civilizations.', 75000000, '2023-08-15', '02:30:00', 3, 1, 4), -- Directed by Quentin Tarantino
+('Epic Journey', 'A thrilling adventure of a team venturing into unknown lands.', 120000000, '2023-09-01', '02:16:00', 3, 1, 5), -- Directed by Quentin Tarantino
+('Silent Film', 'A movie with no characters.', 10000000, '2022-07-15', '01:20:00', 3, 1, 5), -- Directed by Quentin Tarantino
+('Documentary', 'A fascinating documentary.', 2000000, '2023-01-01', '01:15:00', 1, 1, 5), -- Directed by Steven Spielberg
+('Mystery Film', 'A suspenseful film with an unknown plot.', 20000000, '2024-01-01', '01:50:00', 3, 1, 2), -- Directed by Quentin Tarantino
+('Experimental Film', 'A film with experimental techniques.', 15000000, '2024-02-01', '02:50:00', 3, 1, 3), -- Directed by Quentin Tarantino
+('No Character Movie', 'A movie with no characters.', 5000000, '2024-03-01', '01:30:00', 3, 1, 3); -- Directed by Quentin Tarantino
 -- Insert data into Characters
 INSERT INTO Characters (name, description, role) VALUES 
 ('Dr. Alan Grant', 'Paleontologist and main protagonist of Jurassic Park.', 'leading'),
@@ -98,13 +97,20 @@ INSERT INTO MovieActors (movie_id, person_id, character_id, role_description, ro
 
 -- Insert data into Directors
 INSERT INTO Directors (person_id, movie_id) VALUES 
-(1, 1),
-(2, 2),
-(3, 3),
-(3, 4),
-(3, 5),
-(3, 8),
-(4, 9);
+(1, 1), -- Steven Spielberg directing Jurassic Park
+(2, 2), -- Natalie Portman directing Black Swan
+(3, 3), -- Quentin Tarantino directing Inception
+(3, 4), -- Quentin Tarantino directing Mad Max: Fury Road
+(3, 5), -- Quentin Tarantino directing The Grand Budapest Hotel
+(3, 6), -- Quentin Tarantino directing New Movie 1
+(3, 7), -- Quentin Tarantino directing New Movie 2
+(3, 8), -- Quentin Tarantino directing Epic Adventure
+(3, 9), -- Quentin Tarantino directing Epic Journey
+(3, 10), -- Quentin Tarantino directing Silent Film
+(1, 11), -- Steven Spielberg directing Documentary
+(3, 12), -- Quentin Tarantino directing Mystery Film
+(3, 13), -- Quentin Tarantino directing Experimental Film
+(3, 14); -- Quentin Tarantino directing No Character Movie
 
 -- Insert data into Users
 INSERT INTO Users (username, first_name, last_name, email, password, avatar_file_id) VALUES 
