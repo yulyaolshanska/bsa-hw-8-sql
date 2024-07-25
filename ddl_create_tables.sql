@@ -76,38 +76,22 @@ CREATE TABLE Characters (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- MovieCharacters Table (Many-to-Many relationship between Movies and Characters)
-CREATE TABLE MovieCharacters (
-    movie_id INTEGER NOT NULL,
-    character_id INTEGER NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (movie_id, character_id),
-    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (character_id) REFERENCES Characters(character_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- Actors Table (Relationship between Persons and Characters)
-CREATE TABLE Actors (
-    person_id INTEGER NOT NULL,
-    character_id INTEGER NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (person_id, character_id),
-    FOREIGN KEY (person_id) REFERENCES Persons(person_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (character_id) REFERENCES Characters(character_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
+-- MovieActors Table (Many-to-Many relationship between Movies, Actors, and Characters)
 CREATE TABLE MovieActors (
     movie_id INTEGER NOT NULL,
-    person_id INTEGER NOT NULL,
-    role_description TEXT, 
+    person_id INTEGER,
+    character_id INTEGER,
+    role_description TEXT,
+    role_type VARCHAR(50) CHECK (role_type IN ('supporting', 'background')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (movie_id, person_id),
     FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (person_id) REFERENCES Persons(person_id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (person_id) REFERENCES Persons(person_id) ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (character_id) REFERENCES Characters(character_id) ON DELETE SET NULL ON UPDATE CASCADE
 );
+
+CREATE UNIQUE INDEX idx_movie_person ON MovieActors (movie_id, person_id) WHERE person_id IS NOT NULL;
+CREATE UNIQUE INDEX idx_movie_character ON MovieActors (movie_id, character_id) WHERE character_id IS NOT NULL;
 
 -- Directors Table (Relationship between Persons and Movies)
 CREATE TABLE Directors (
@@ -197,17 +181,9 @@ BEFORE UPDATE ON Characters
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- MovieCharacters
-CREATE TRIGGER update_moviecharacters_updated_at
-BEFORE UPDATE ON MovieCharacters
-FOR EACH ROW
-EXECUTE FUNCTION update_updated_at_column();
-
--- Actors
-CREATE TRIGGER update_actors_updated_at
-BEFORE UPDATE ON Actors
-FOR EACH ROW
-EXECUTE FUNCTION update_updated_at_column();
+-- MovieActors
+CREATE TRIGGER update_movieactors_updated_at
+BEFORE UPDATE ON MovieActors
 
 -- Directors
 CREATE TRIGGER update_directors_updated_at
