@@ -82,7 +82,7 @@ CREATE TABLE MovieActors (
     person_id INTEGER,
     character_id INTEGER,
     role_description TEXT,
-    role_type VARCHAR(50) CHECK (role_type IN ('leading', 'supporting', 'background')),
+    role_type VARCHAR(50) CHECK (role_type IN ('supporting', 'background')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
