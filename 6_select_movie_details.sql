@@ -1,7 +1,7 @@
 WITH actor_details AS (
     SELECT
         m.movie_id,
-        pa.person_id,
+        ma.person_id,
         pa.first_name,
         pa.last_name,
         json_build_object(
@@ -16,24 +16,6 @@ WITH actor_details AS (
     LEFT JOIN Persons pa ON ma.person_id = pa.person_id
     LEFT JOIN Files af ON pa.primary_photo_file_id = af.file_id
     WHERE m.movie_id = 1
-    UNION ALL
-    SELECT
-        mc.movie_id,
-        pa.person_id,
-        pa.first_name,
-        pa.last_name,
-        json_build_object(
-            'file_id', af.file_id,
-            'file_name', af.file_name,
-            'mime_type', af.mime_type,
-            'file_key', af.file_key,
-            'url', af.url
-        ) AS photo
-    FROM MovieCharacters mc
-    JOIN Actors a ON mc.character_id = a.character_id
-    JOIN Persons pa ON a.person_id = pa.person_id
-    LEFT JOIN Files af ON pa.primary_photo_file_id = af.file_id
-    WHERE mc.movie_id = 1
 ),
 actor_agg AS (
     SELECT
@@ -87,7 +69,7 @@ SELECT
     ) AS director,
     a.actors,
     g.genres
-    
+
 FROM Movies m
 LEFT JOIN Files f ON m.poster_file_id = f.file_id
 JOIN Directors d ON m.movie_id = d.movie_id

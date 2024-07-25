@@ -76,38 +76,25 @@ INSERT INTO Characters (name, description, role) VALUES
 ('Character 6', 'Description for Character 6', 'background'),
 ('Unspecified', 'Role without a specific character.', 'background');
 
--- Insert data into MovieCharacters
-INSERT INTO MovieCharacters (movie_id, character_id) VALUES 
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 1),
-(6, 3),
-(6, 4),
-(7, 3),
-(7, 5),
-(7, 2),
-(5, 8),
-(8, 6),  -- Adding background character to Epic Adventure
-(9, 5); -- Adding background character to Epic Journey
-
-INSERT INTO MovieActors (movie_id, person_id) VALUES 
-(1, 7),  -- Actor with no specific character
-(8, 4),
-(7, 5); -- Another actor with no specific character
-
--- Insert data into Actors
-INSERT INTO Actors (person_id, character_id) VALUES 
-(6, 1),
-(2, 2),
-(1, 4),
-(3, 3),
-(4, 5),
-(1, 3),
-(2, 4),
-(6, 8);
+-- Expanded insertions for MovieActors
+INSERT INTO MovieActors (movie_id, person_id, character_id, role_description, role_type) VALUES 
+(1, 7, NULL, 'Actor with no specific character', 'background'), 
+(8, 4, 6, 'Background character in Epic Adventure', 'background'), 
+(7, 5, NULL, 'Another actor with no specific character', 'background'),  
+(1, 1, 1, 'Leading role', 'leading'),  
+(2, 2, 2, 'Leading role', 'leading'), 
+(3, 3, 3, 'Leading role', 'leading'), 
+(4, 4, 4, 'Leading role', 'leading'), 
+(5, 5, 5, 'Leading role', 'leading'), 
+(6, 1, 3, 'Supporting role', 'supporting'),
+(6, NULL, 2, 'Supporting role', 'supporting'), 
+(7, NULL, 3, 'Supporting role', 'supporting'), 
+(6, 3, 1, 'Supporting role', 'supporting'), 
+(7, 5, 7, 'Supporting role', 'supporting'), 
+(7, 2, 2, 'Supporting role', 'supporting'), 
+(9, NULL, 5, 'Background role', 'background'), 
+(8, 6, 6, 'Background role', 'background'),
+(12, NULL, 11, 'Background role', 'background'); 
 
 -- Insert data into Directors
 INSERT INTO Directors (person_id, movie_id) VALUES 
@@ -136,7 +123,7 @@ INSERT INTO FavoriteMovies (user_id, movie_id) VALUES
 (2, 4),
 (1, 8),
 (3, 2), 
-(3, 9); 
+(3, 9), 
 (4, 2),  -- Michael likes Black Swan
 (4, 9);  -- Michael likes Epic Adventure
 

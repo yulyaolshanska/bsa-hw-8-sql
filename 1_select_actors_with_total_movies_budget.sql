@@ -6,10 +6,8 @@ SELECT
 FROM
     Persons p
 LEFT JOIN
-    Actors a ON p.person_id = a.person_id
+    MovieActors ma ON p.person_id = ma.person_id
 LEFT JOIN
-    MovieCharacters mc ON a.character_id = mc.character_id
-LEFT JOIN
-    Movies m ON mc.movie_id = m.movie_id
+    Movies m ON ma.movie_id = m.movie_id
 GROUP BY
     p.person_id, p.first_name, p.last_name;

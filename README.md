@@ -49,6 +49,9 @@ erDiagram
     MOVIEGENRES {
         int movie_id FK
         int genre_id FK
+        timestamp created_at
+        timestamp updated_at
+        PK(movie_id, genre_id)
     }
     CHARACTERS {
         int character_id PK
@@ -70,28 +73,25 @@ erDiagram
         timestamp created_at
         timestamp updated_at
     }
-    MOVIECHARACTERS {
-        int movie_id FK
-        int character_id FK
-    }
-    ACTORS {
-        int person_id FK
-        int character_id FK
-    }
     MOVIEACTORS {
         int movie_id FK
         int person_id FK
+        int character_id FK
         text role_description
+        varchar role_type
         timestamp created_at
         timestamp updated_at
+        PK(movie_id, person_id, character_id)
     }
     DIRECTORS {
         int person_id FK
         int movie_id FK
+        PK(person_id, movie_id)
     }
     FAVORITEMOVIES {
         int user_id FK
         int movie_id FK
+        PK(user_id, movie_id)
     }
 
     USERS ||--o{ FILES : "avatar_file_id"
@@ -100,13 +100,10 @@ erDiagram
     MOVIES ||--o{ PERSONS : "director_id"
     MOVIES ||--o{ MOVIEGENRES : "movie_id"
     GENRES ||--o{ MOVIEGENRES : "genre_id"
-    MOVIES ||--o{ MOVIECHARACTERS : "movie_id"
-    CHARACTERS ||--o{ MOVIECHARACTERS : "character_id"
-    PERSONS ||--o{ ACTORS : "person_id"
-    CHARACTERS ||--o{ ACTORS : "character_id"
+    MOVIES ||--o{ MOVIEACTORS : "movie_id"
+    CHARACTERS ||--o{ MOVIEACTORS : "character_id"
+    PERSONS ||--o{ MOVIEACTORS : "person_id"
     PERSONS ||--o{ DIRECTORS : "person_id"
     MOVIES ||--o{ DIRECTORS : "movie_id"
     USERS ||--o{ FAVORITEMOVIES : "user_id"
     MOVIES ||--o{ FAVORITEMOVIES : "movie_id"
-    MOVIES ||--o{ MOVIEACTORS : "movie_id"
-    PERSONS ||--o{ MOVIEACTORS : "person_id"
